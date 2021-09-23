@@ -1,0 +1,14 @@
+{
+    "name": "Validator",
+    "tooltype": "python",
+    "includes": [
+        "validate.py"
+    ],
+    "description": "Validates databases against given rules",
+    "inputfiles": [],
+    "inputfiles_opt": [],
+    "outputfiles": [],
+    "cmdline_args": [],
+    "execute_in_work": true,
+    "includes_main_path": "."
+}
