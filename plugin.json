@@ -1,8 +1,8 @@
 {
-    "name": "Validator",
+    "name": "DataUtilities",
     "version": "0.1.0",
-    "base_path": "https://spine-project.github.io/ValidatorPlugin/",
-    "description": "Validator plugin for Spine Toolbox.",
+    "base_path": "https://spine-project.github.io/DataUtilitiesPlugin/",
+    "description": "Data utilities plugin for Spine Toolbox.",
     "specifications": {
         "Tool": [
             {

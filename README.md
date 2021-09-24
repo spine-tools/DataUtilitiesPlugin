@@ -1,14 +1,18 @@
-# Validator plugin
+# Data utilities plugin
 
 This is a [Spine Toolbox](https://github.com/Spine-project/Spine-Toolbox) plugin
-that provides Spine data validation capabilities.
+that contains utilities Spine databases.
 Install the plugin by choosing *Plugins -> Install plugin...* from Toolbox menu
-and selecting *ValidatorPlugin* from the dialog that opens.
+and selecting *DataUtilitiesPlugin* from the dialog that opens.
+
 The plugin adds **Validator** Tool specification to the main toolbar.
 
-Currently, the plugin supports validating object and relationship parameter values.
+# Validator
 
-## Dependencies
+Validator contains a Tool specification and corresponding Python script
+that provide Spine data validation capabilities.
+
+Currently, the plugin supports validating object and relationship parameter values.
 
 The plugin depends on [``cerberus``](https://docs.python-cerberus.org) Python module
 which must be available in Validator's Python environment.
@@ -76,7 +80,7 @@ or ``{"type": "map", "number of indexes": 3}``.
 
 Additional types for the
 [type](https://docs.python-cerberus.org/en/stable/validation-rules.html#type)
-rule supported by Validator: ``"array""``, ``"duration""``,``"map""``, ``"time pattern""``, ``"time series""``
+rule supported by Validator: ``"array"``, ``"duration"``,``"map"``, ``"time pattern"``, ``"time series"``
 
 Validator has some additional rules too to validate the number of indexes of an indexed value.
 They are tabulated below.
@@ -115,7 +119,7 @@ The template settings file below could serve as a starting point for defining va
 
 ## Version history
 
-0.1.0: First release.
+0.1.0: First release. Includes Validator.
 
 &nbsp;
 <hr>
