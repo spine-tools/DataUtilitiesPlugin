@@ -38,6 +38,32 @@ The file must contain a JSON dict with two optional keys,
 The first key must map to a list of object parameter value validation *rules*
 while the second must map to an equivalent list for relationships.
 
+The template settings file below could serve as a starting point for defining validator rules.
+The rules are explained in more detail after the template.
+
+```json
+{
+  "object_parameter_value": [
+    {
+      "class": "class",
+      "parameter": "param",
+      "object": "",
+      "alternative": "",
+      "rule": {"type": "float", "max": 0.0}
+    }
+  ],
+  "relationship_parameter_value": [
+    {
+      "class": "class",
+      "parameter": "param",
+      "objects": [""],
+      "alternative": "",
+      "rule": {"type": "float", "max": 0.0}
+    }
+  ]
+}
+```
+
 Rules for object parameter values are JSON dicts and look like the following:
 
 ```json
@@ -91,34 +117,10 @@ They are tabulated below.
 | number of indexes | ``{"number of indexes": 3}`` |
 | max indexes       | ``{"max indexes": 2}``       |
 
-The template settings file below could serve as a starting point for defining validator rules.
-
-```json
-{
-  "object_parameter_value": [
-    {
-      "class": "class",
-      "parameter": "param",
-      "object": "",
-      "alternative": "",
-      "rule": {"type": "float", "max": 0.0}
-    }
-  ],
-  "relationship_parameter_value": [
-    {
-      "class": "class",
-      "parameter": "param",
-      "objects": [""],
-      "alternative": "",
-      "rule": {"type": "float", "max": 0.0}
-    }
-  ]
-}
-
-```
 
 ## Version history
 
+0.1.1: Improved Validator logging.
 0.1.0: First release. Includes Validator.
 
 &nbsp;

@@ -1,6 +1,6 @@
 {
     "name": "DataUtilities",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "base_path": "https://spine-project.github.io/DataUtilitiesPlugin/",
     "description": "Data utilities plugin for Spine Toolbox.",
     "specifications": {

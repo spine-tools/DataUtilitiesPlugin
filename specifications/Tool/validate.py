@@ -197,20 +197,29 @@ class RelationshipParameterValuePattern:
         return True
 
 
-def validate(db_map, settings):
+def validate(db_map, object_parameter_rules, relationship_parameter_rules):
     """Validates a database.
 
     Args:
         db_map (DatabaseMappingBase): database mappings
-        settings (dict): validation settings
+        object_parameter_rules (list of dict): validation rules for object parameter values
+        relationship_parameter_rules (list of dict): validation rules for relationship parameter values
 
     Returns:
         list of str: list of error messages if validation fails
     """
-    object_parameter_rules = settings.get("object_parameter_value", [])
-    relationship_parameter_rules = settings.get("relationship_parameter_value", [])
+
+    def report_processed_value_count(value_count, rule_index, rule_count):
+        if value_count == 0:
+            print(f"Rule {rule_index + 1}/{rule_count}: no values found to process")
+        else:
+            noun = "value" if value_count == 1 else "values"
+            print(f"Rule {rule_index + 1}/{rule_count}: {value_count} {noun} processed")
+
     errors = list()
-    for rule in object_parameter_rules:
+    for i, rule in enumerate(object_parameter_rules):
+        if not isinstance(rule, dict):
+            raise TypeError(f"Expected rule number {i + 1} to be dict.")
         value_pattern = ObjectParameterValuePattern(
             rule.get("class", ""),
             rule.get("parameter", ""),
@@ -218,6 +227,7 @@ def validate(db_map, settings):
             rule.get("alternative", ""),
         )
         validator = SpineValidator({"value": rule["rule"]})
+        touch_count = 0
         for db_row in db_map.query(db_map.object_parameter_value_sq):
             if not value_pattern.matches(db_row):
                 continue
@@ -225,7 +235,11 @@ def validate(db_map, settings):
             if not valid:
                 message = build_message_for_object_row(db_row, validator.errors)
                 errors.append(message)
-    for rule in relationship_parameter_rules:
+            touch_count += 1
+        report_processed_value_count(touch_count, i, len(object_parameter_rules))
+    for i, rule in enumerate(relationship_parameter_rules):
+        if not isinstance(rule, dict):
+            raise TypeError(f"Expected rule number {i + 1} to be dict.")
         value_pattern = RelationshipParameterValuePattern(
             rule.get("class", ""),
             rule.get("parameter", ""),
@@ -233,6 +247,7 @@ def validate(db_map, settings):
             rule.get("alternative", ""),
         )
         validator = SpineValidator({"value": rule["rule"]})
+        touch_count = 0
         for db_row in db_map.query(db_map.relationship_parameter_value_sq):
             if not value_pattern.matches(db_row):
                 continue
@@ -240,6 +255,8 @@ def validate(db_map, settings):
             if not valid:
                 message = build_message_for_relationship_row(db_row, validator.errors)
                 errors.append(message)
+            touch_count += 1
+        report_processed_value_count(touch_count, i, len(relationship_parameter_rules))
     return errors
 
 
@@ -251,31 +268,53 @@ def validate_urls(urls, settings):
         settings (dict): validation settings
 
     Returns:
-        dict: mapping from URL to list of validation errors
+        bool: True if validation was successful, False otherwise
     """
-    errors = dict()
+
+    def report_rule_counts(rule_list, entity_type):
+        if rule_list:
+            if len(rule_list) == 1:
+                print(f"Validating a single rule for {entity_type} parameter values.")
+            else:
+                print(
+                    f"Validating {len(rule_list)} rules for {entity_type} parameter values."
+                )
+        else:
+            print(f"No validation rules found for {entity_type} parameter values.")
+
+    object_parameter_rules = settings.get("object_parameter_value", [])
+    if not isinstance(object_parameter_rules, list):
+        raise TypeError(f'Expected "object_parameter_value" to contain a list.')
+    report_rule_counts(object_parameter_rules, "object")
+    relationship_parameter_rules = settings.get("relationship_parameter_value", [])
+    if not isinstance(object_parameter_rules, list):
+        raise TypeError(f'Expected "relationship_parameter_value" to contain a list.')
+    report_rule_counts(relationship_parameter_rules, "relationship")
+    success = True
     for url in urls:
+        print(f"Processing database at {url}")
         db_map = DatabaseMapping(url)
         try:
-            failures = validate(db_map, settings)
-            if failures:
-                errors[url] = failures
+            errors = validate(
+                db_map, object_parameter_rules, relationship_parameter_rules
+            )
+            if errors:
+                success = False
+                print_errors(errors, sys.stderr)
         finally:
             db_map.connection.close()
-    return errors
+    return success
 
 
 def print_errors(errors, out_stream):
     """Prints errors to given stream.
 
     Args:
-        errors (dict): mapping from database URL to list of error messages
+        errors (list): list of error messages
         out_stream (IOBase): a file like object for output
     """
-    for url, messages in errors.items():
-        print(f"in {url}:", file=out_stream)
-        for error in messages:
-            print("    " + error, file=out_stream)
+    for error in errors:
+        print("    " + error, file=out_stream)
 
 
 if __name__ == "__main__":
@@ -283,7 +322,10 @@ if __name__ == "__main__":
     args = arg_parser.parse_args()
     with open(args.schema) as settings_file:
         validation_settings = json.load(settings_file)
-    errors = validate_urls(args.url, validation_settings)
-    if errors:
-        print_errors(errors, sys.stderr)
+    if not isinstance(validation_settings, dict):
+        raise TypeError(f"Expected {args.schema} to contain a JSON dict.")
+    validation_successful = validate_urls(args.url, validation_settings)
+    if not validation_successful:
+        print("Validation unsuccessful. Raising a Traceback to stop execution.")
         raise ValidationFailed()
+    print("Validation successful.")
