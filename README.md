@@ -120,8 +120,8 @@ They are tabulated below.
 
 ## Version history
 
-0.1.1: Improved Validator logging.
-0.1.0: First release. Includes Validator.
+- 0.1.1: Improved Validator logging.
+- 0.1.0: First release. Includes Validator.
 
 &nbsp;
 <hr>
