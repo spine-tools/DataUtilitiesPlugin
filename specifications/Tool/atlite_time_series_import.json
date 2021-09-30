@@ -1,0 +1,14 @@
+{
+    "name": "Atlite time series import",
+    "tooltype": "python",
+    "includes": [
+        "atlite_time_series_reader.py"
+    ],
+    "description": "Imports Atlite time series as object parameters from netCDF files.",
+    "inputfiles": [],
+    "inputfiles_opt": [],
+    "outputfiles": [],
+    "cmdline_args": [],
+    "execute_in_work": true,
+    "includes_main_path": "."
+}

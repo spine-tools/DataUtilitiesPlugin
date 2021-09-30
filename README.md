@@ -1,11 +1,11 @@
 # Data utilities plugin
 
 This is a [Spine Toolbox](https://github.com/Spine-project/Spine-Toolbox) plugin
-that contains utilities Spine databases.
+that contains utilities for Spine databases.
 Install the plugin by choosing *Plugins -> Install plugin...* from Toolbox menu
-and selecting *DataUtilitiesPlugin* from the dialog that opens.
+and selecting *DataUtilitiesPlugin* from the dialog.
 
-The plugin adds **Validator** Tool specification to the main toolbar.
+The plugin adds two Tool specifications to the main toolbar: **Validator** and **Atlite time series import**
 
 # Validator
 
@@ -118,8 +118,39 @@ They are tabulated below.
 | max indexes       | ``{"max indexes": 2}``       |
 
 
+# Atlite time series import
+
+[Atlite](https://atlite.readthedocs.io/en/latest/) importer can be used
+to import energy systems converted time series from netCDF files
+into object parameter values in Spine database.
+It comes as a Tool specification and accompanying Python script.
+
+The script requires [`xarray`](http://xarray.pydata.org/en/stable/) and
+[`netcdf4`](http://unidata.github.io/netcdf4-python/) Python packages.
+
+## Usage
+
+Atlite time series import tool expects the following command line arguments:
+
+- *Optional*: `-a <alternative name>` imports the time series into given alternative.
+  Defaults to `Base`.
+- Object class name
+- Parameter name
+- One or more paths to netCDF files
+- Target database URL
+
+The tool expects to find a dataset in each of the input files that contains two-dimensional data arrays.
+The first dimension must be `time` and its coordinates the time stamps.
+The second dimension is used as object names, and thus it must contain strings that can be used as such.
+
+To set up the importer, create a Tool project item with *Atlite time series import* as its specification.
+Next, specify target object class, parameter and, optionally, alternative as command line arguments to the tool.
+A Data Connection can be used to provide the paths to netCDF input files
+while a Data store provides a URL.
+
 ## Version history
 
+- 0.2.0: Added Atlite importer.
 - 0.1.1: Improved Validator logging.
 - 0.1.0: First release. Includes Validator.
 
