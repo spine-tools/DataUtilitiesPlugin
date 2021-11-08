@@ -1,0 +1,14 @@
+{
+    "name": "Interpolate missing values",
+    "tooltype": "python",
+    "includes": [
+        "interpolate_missing_values.py"
+    ],
+    "description": "Fills missing values in time series by interpolation.",
+    "inputfiles": [],
+    "inputfiles_opt": [],
+    "outputfiles": [],
+    "cmdline_args": [],
+    "execute_in_work": true,
+    "includes_main_path": "."
+}

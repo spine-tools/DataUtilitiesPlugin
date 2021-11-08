@@ -148,8 +148,26 @@ Next, specify target object class, parameter and, optionally, alternative as com
 A Data Connection can be used to provide the paths to netCDF input files
 while a Data store provides a URL.
 
-## Version history
+# Interpolate missing time series values
 
+This plugin 'repairs' variable resolution time series data by interpolating missing data points
+and converting the time series to fixed resolution.
+The plugin updates the databases in-place replacing the original time series.
+
+## Usage
+
+The plugin Tool takes interpolation type as its first argument
+and one or more database URLs as the rest.
+The following interpolation types are available:
+
+- `nearest` fills missing values by the nearest value
+- `next` uses the next available value
+- `previous` uses the value just before the gap
+- `linear` is linear interpolation
+
+# Version history
+
+- 0.3.0: Added plugin that interpolates missing values in time series.
 - 0.2.0: Added Atlite importer.
 - 0.1.1: Improved Validator logging.
 - 0.1.0: First release. Includes Validator.

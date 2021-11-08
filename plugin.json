@@ -1,6 +1,6 @@
 {
     "name": "DataUtilities",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "base_path": "https://spine-project.github.io/DataUtilitiesPlugin/",
     "description": "Data utilities plugin for Spine Toolbox.",
     "specifications": {
@@ -14,6 +14,11 @@
                 "type": "path",
                 "relative": true,
                 "path": "specifications/Tool/atlite_time_series_import.json"
+            },
+            {
+                "type": "path",
+                "relative": true,
+                "path": "specifications/Tool/interpolate_missing_values.json"
             }
         ]
     }
