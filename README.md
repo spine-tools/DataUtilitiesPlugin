@@ -5,7 +5,7 @@ that contains utilities for Spine databases.
 Install the plugin by choosing *Plugins -> Install plugin...* from Toolbox menu
 and selecting *DataUtilitiesPlugin* from the dialog.
 
-The plugin adds two Tool specifications to the main toolbar: **Validator** and **Atlite time series import**
+The plugin adds three Tool specifications to the main toolbar: **Validator** and **Atlite time series import** and **Interpolate missing time series values**
 
 # Validator
 
